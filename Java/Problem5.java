@@ -1,3 +1,5 @@
+import java.util.stream.IntStream;
+
 /**
  * 1 ~ 10 사이의 어떤 수로도 나누어 떨어지는 가장 작은 수는 2520입니다.
  * 그러면 1 ~ 20 사이의 어떤 수로도 나누어 떨어지는 가장 작은 수는 얼마입니까?
@@ -12,24 +14,15 @@ public class Problem5 {
 
     public static void main(String[] args) {
 
-        int num = 11;
+        int result = IntStream.iterate(11, x -> x + 1)
+                .filter(Problem5::isModFrom1to20)
+                .findFirst().getAsInt();
 
-        while (true) {
-            if (isModFrom1to20(num)) {
-                break;
-            }
-            num++;
-        }
-        System.out.println(String.valueOf(num));  // 232792560
+        System.out.println(String.valueOf(result));  // 232792560
     }
 
     public static boolean isModFrom1to20(int num) {
-
-        for (int i = 2; i <= 20; i++) {
-            if (num % i != 0) {
-                return false;
-            }
-        }
-        return true;
+        return IntStream.range(2, 20)
+                .noneMatch(x -> num % x != 0);
     }
 }
